@@ -43,6 +43,13 @@
                   <div class="upload-text" xstyle="">Upload</div>
                 </div>
                 <div class="btn-group">
+                    <button type="button" class="btn btn-xs btn-default btn-cayennscript hidden" data-delay="1000" 
+                    data-animation="true" data-placement="auto" data-container="body" data-trigger="hover" 
+                    data-title="Cayenn Script" 
+                    data-content="Send Cayenn Lua scripts to editor for you to edit and upload to your ESP32 to get you started with a Cayenn enabled ESP32."><span class="glyphicon glyphicon-edit"></span>
+                    </button>
+                </div>
+                <div class="btn-group">
                     <button type="button" class="btn btn-xs btn-default btn-refresh" data-delay="1000" 
                     data-animation="true" data-placement="auto" data-container="body" data-trigger="hover" 
                     data-title="Rescan Network for Devices" data-content="Send out a broadcast request via UDP for all devices to send back an announcement of their existence."><span class="glyphicon glyphicon-refresh"></span>
@@ -165,23 +172,23 @@
                 
                 <table class="" style="border:0px solid blue;margin-top:0px;width:100%;height:100%;"><tr valign="top"><td>
                 
-                <div class="cayenn-icon-small">
-                <div class="cayenn-icon " style="" data-delay="1000" data-animation="true" data-placement="auto" data-container="body" data-trigger="hover" 
-                    data-title="DispenserPaste" 
-                    data-content='<table class="table table-condensed table-striped">
-                        <tr><th>Gcode</th><th>Description</th></tr>
-                        <tr><td>Maps to A axis</td><td>Linear slide. Max 0mm. Min -72mm.</td></tr>
-                        <tr><td>Maps to A axis</td><td>Auger. Unlimited degrees.</td></tr>
-                        </table>
-                        <p>Techcon DMP-10 auger with stepper and linear slide</p>
-                        <p style="font-size:10px;margin-bottom:0;">IP: 192.168.1.24:8988 UDP/TCP</p>
-                        '>
-                    <div class="cayenn-deviceimg" style="background-image:url('http://gds-storage-prd.s3.amazonaws.com/fusion-360/161021/1972/70f0aa71/thumbnails/raasrendering-bbf3b3d5-01c5-48e4-bbdb-f81727a520ab-160-160.jpg');" ></div>
-                    <div class="cayenn-name">
-                        DispenserPaste
+                    <div class="cayenn-icon-small">
+                        <div class="cayenn-icon " style="" data-delay="1000" data-animation="true" data-placement="auto" data-container="body" data-trigger="hover" 
+                            data-title="DispenserPaste" 
+                            data-content='<table class="table table-condensed table-striped">
+                                <tr><th>Gcode</th><th>Description</th></tr>
+                                <tr><td>Maps to A axis</td><td>Linear slide. Max 0mm. Min -72mm.</td></tr>
+                                <tr><td>Maps to A axis</td><td>Auger. Unlimited degrees.</td></tr>
+                                </table>
+                                <p>Techcon DMP-10 auger with stepper and linear slide</p>
+                                <p style="font-size:10px;margin-bottom:0;">IP: 192.168.1.24:8988 UDP/TCP</p>
+                                '>
+                            <div class="cayenn-deviceimg" style="background-image:url('http://gds-storage-prd.s3.amazonaws.com/fusion-360/161021/1972/70f0aa71/thumbnails/raasrendering-bbf3b3d5-01c5-48e4-bbdb-f81727a520ab-160-160.jpg');" ></div>
+                            <div class="cayenn-name">
+                                DispenserPaste
+                            </div>
+                        </div>
                     </div>
-                </div>
-                </div>
                 
                 </td><td style="border:0px solid green;width:100%;height:150px;margin:0;padding:0;overflow:auto;">
                 
@@ -273,6 +280,10 @@
                 <input type="text" class="form-control cayenn-entercmd" placeholder="Enter Cayenn Command">
                 
             </div>
+
+                </td></tr></table>
+                
+            </div><!-- end cayenn-onedevice div -->
 
             <!-- 3D View -->
             <div id="cayenn-renderarea" class="hidden" style="border:0px solid red;position:absolute;left:0;top:0;bottom:0;right:0;">

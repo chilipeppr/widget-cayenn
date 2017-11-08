@@ -265,74 +265,89 @@ cprequire_test(["inline:com-chilipeppr-widget-cayenn"], function(myWidget) {
         }
     );
 
+    var options = {
+        enableEsp32Script: true // turns on button to let user send starter script to editor for esp32
+    }
+    
     // init my widget
-    myWidget.init();
+    myWidget.init(options);
     // $('#' + myWidget.id).css('margin', '20px
     $('body').css('padding', '20px');
     $('title').html(myWidget.name);
 
-    // Inject new div to contain widget or use an existing div with an ID
-    $("body").append('<' + 'div id="myDivElemDragdrop"><' + '/div>');
-    
-    chilipeppr.load(
-      "#myDivElemDragdrop",
-      "http://raw.githubusercontent.com/chilipeppr/elem-dragdrop/master/auto-generated-widget.html",
-      function() {
-        // Callback after widget loaded into #myDivElemDragdrop
-        // Now use require.js to get reference to instantiated widget
-        cprequire(
-          ["inline:com-chilipeppr-elem-dragdrop"], // the id you gave your widget
-          function(myObjElemDragdrop) {
-            // Callback that is passed reference to the newly loaded widget
-            console.log("Element / Drag Drop just got loaded.", myObjElemDragdrop);
-            myObjElemDragdrop.init();
-            myObjElemDragdrop.bind("body", null);
+    var testLoadDragDrop = function() {
+        
+        // Inject new div to contain widget or use an existing div with an ID
+        $("body").append('<' + 'div id="myDivElemDragdrop"><' + '/div>');
+        
+        chilipeppr.load(
+          "#myDivElemDragdrop",
+          "http://raw.githubusercontent.com/chilipeppr/elem-dragdrop/master/auto-generated-widget.html",
+          function() {
+            // Callback after widget loaded into #myDivElemDragdrop
+            // Now use require.js to get reference to instantiated widget
+            cprequire(
+              ["inline:com-chilipeppr-elem-dragdrop"], // the id you gave your widget
+              function(myObjElemDragdrop) {
+                // Callback that is passed reference to the newly loaded widget
+                console.log("Element / Drag Drop just got loaded.", myObjElemDragdrop);
+                myObjElemDragdrop.init();
+                myObjElemDragdrop.bind("body", null);
+              }
+            );
           }
         );
-      }
-    );
-    
-    // Inject new div to contain widget or use an existing div with an ID
-    $("body").append('<' + 'div id="myDivWidgetSerialport"><' + '/div>');
+        
+    }
+    // testLoadDragDrop();
 
-    chilipeppr.load(
-      "#myDivWidgetSerialport",
-      "http://raw.githubusercontent.com/chilipeppr/widget-spjs/master/auto-generated-widget.html",
-      function() {
-        // Callback after widget loaded into #myDivWidgetSerialport
-        // Now use require.js to get reference to instantiated widget
-        cprequire(
-          ["inline:com-chilipeppr-widget-serialport"], // the id you gave your widget
-          function(myObjWidgetSerialport) {
-            // Callback that is passed reference to the newly loaded widget
-            console.log("Widget / Serial Port JSON Server just got loaded.", myObjWidgetSerialport);
-            myObjWidgetSerialport.init();
-            myObjWidgetSerialport.consoleToggle();
+    var testLoadSPJS = function() {
+        // Inject new div to contain widget or use an existing div with an ID
+        $("body").append('<' + 'div id="myDivWidgetSerialport"><' + '/div>');
+    
+        chilipeppr.load(
+          "#myDivWidgetSerialport",
+          "http://raw.githubusercontent.com/chilipeppr/widget-spjs/master/auto-generated-widget.html",
+          function() {
+            // Callback after widget loaded into #myDivWidgetSerialport
+            // Now use require.js to get reference to instantiated widget
+            cprequire(
+              ["inline:com-chilipeppr-widget-serialport"], // the id you gave your widget
+              function(myObjWidgetSerialport) {
+                // Callback that is passed reference to the newly loaded widget
+                console.log("Widget / Serial Port JSON Server just got loaded.", myObjWidgetSerialport);
+                myObjWidgetSerialport.init();
+                myObjWidgetSerialport.consoleToggle();
+              }
+            );
           }
         );
-      }
-    );
+    }
+    // testLoadSPJS();
     
-    // Inject new div to contain widget or use an existing div with an ID
-    $("body").append('<' + 'div id="myDivWidgetGcode"><' + '/div>');
-    
-    chilipeppr.load(
-      "#myDivWidgetGcode",
-      "http://raw.githubusercontent.com/chilipeppr/widget-gcodelist/master/auto-generated-widget.html",
-      function() {
-        // Callback after widget loaded into #myDivWidgetGcode
-        // Now use require.js to get reference to instantiated widget
-        cprequire(
-          ["inline:com-chilipeppr-widget-gcode"], // the id you gave your widget
-          function(myObjWidgetGcode) {
-            // Callback that is passed reference to the newly loaded widget
-            console.log("Widget / Gcode v8 just got loaded.", myObjWidgetGcode);
-            myObjWidgetGcode.init();
+    var testLoadGcodeWidget = function() {
+        // Inject new div to contain widget or use an existing div with an ID
+        $("body").append('<' + 'div id="myDivWidgetGcode"><' + '/div>');
+        
+        chilipeppr.load(
+          "#myDivWidgetGcode",
+          "http://raw.githubusercontent.com/chilipeppr/widget-gcodelist/master/auto-generated-widget.html",
+          function() {
+            // Callback after widget loaded into #myDivWidgetGcode
+            // Now use require.js to get reference to instantiated widget
+            cprequire(
+              ["inline:com-chilipeppr-widget-gcode"], // the id you gave your widget
+              function(myObjWidgetGcode) {
+                // Callback that is passed reference to the newly loaded widget
+                console.log("Widget / Gcode v8 just got loaded.", myObjWidgetGcode);
+                myObjWidgetGcode.init();
+              }
+            );
           }
         );
-      }
-    );
-
+    }
+    // testLoadGcodeWidget();
+    
     // show modal
     /*
     setTimeout(function() {
@@ -410,9 +425,23 @@ cpdefine("inline:com-chilipeppr-widget-cayenn", ["chilipeppr_ready", "Three", "T
         /**
          * All widgets should have an init method. It should be run by the
          * instantiating code like a workspace or a different widget.
+         * 
+         * You can pass in options of:
+         *  var options = {
+         *      enableEsp32Script: true // turns on button to let user send starter script to editor for esp32
+         *  }
+         *  widget.init(options);
          */
-        init: function() {
-            console.log("I am being initted. Thanks.");
+        init: function(options) {
+            console.log("I am being initted. options:", options);
+            
+            if (options) {
+                if (options.enableEsp32Script) {
+                    // turn on button
+                    $('#' + this.id + ' .btn-cayennscript').removeClass('hidden');
+                    this.setupCayennScriptBtn();
+                }
+            }
 
             this.setupUiFromLocalStorage();
             this.btnSetup();
@@ -447,6 +476,30 @@ cpdefine("inline:com-chilipeppr-widget-cayenn", ["chilipeppr_ready", "Three", "T
             this.forkSetup();
             
             console.log("I am done being initted.");
+        },
+        /**
+         * Turn on button, if asked to during init call, to let user send Cayenn script
+         * to the Lua editor so they can more easily get started with Cayenn.
+         */
+        setupCayennScriptBtn: function() {
+            $('#' + this.id + ' .btn-cayennscript').click(this.onCreateScript.bind(this));
+        },
+        onCreateScript: function() {
+            console.log("onCreateScript. ");
+            
+            // https://gist.githubusercontent.com/chilipeppr/d788f20372ebe8c7dc9b3c676e992594/raw/873413f421cbca4fa85cd0ceb72481db48f37cab/cayenn_esp32_full_v1.lua
+            $.ajax({
+                    url: "https://gist.githubusercontent.com/chilipeppr/d788f20372ebe8c7dc9b3c676e992594/raw/873413f421cbca4fa85cd0ceb72481db48f37cab/cayenn_esp32_full_v1.lua",
+                })
+                .done(function( data ) {
+                    // console.log("got gist. data:", data);
+                    var obj = {
+                        name: "xbmimagecayenn_esp32_full_v1.lua",
+                        content: data
+                    }
+                    chilipeppr.publish("/com-chilipeppr-widget-luaeditor/loadScript", obj);
+
+                });          
         },
         /**
          * We watch the play button and make sure we send a ResetCtr for all devices that
@@ -1233,12 +1286,20 @@ cpdefine("inline:com-chilipeppr-widget-cayenn", ["chilipeppr_ready", "Three", "T
             pc.createOffer(pc.setLocalDescription.bind(pc), noop);    // create offer and set local description
             pc.onicecandidate = function(ice){  //listen for candidate events
                 if(!ice || !ice.candidate || !ice.candidate.candidate)  return;
-                var myIP = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/.exec(ice.candidate.candidate)[1];
-                console.log('my IP: ', myIP);
-                var subnet = myIP.replace(/\d+$/, "255");
-                console.log("my IP subnet:", subnet);
-                pc.onicecandidate = noop;
-                callback({ip:myIP,subnet:subnet});
+                console.log("onicecandidate. ice:", ice);
+                
+                // check to make sure we have an ip address we recognize. we get multiple callbacks here
+                // for ipv6 as well
+                if (ice.candidate.candidate.match(/([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/)) {
+                    var myIP = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/.exec(ice.candidate.candidate)[1];
+                    console.log('my IP: ', myIP);
+                    var subnet = myIP.replace(/\d+$/, "255");
+                    console.log("my IP subnet:", subnet);
+                    pc.onicecandidate = noop;
+                    callback({ip:myIP,subnet:subnet});
+                } else {
+                    console.log("could not find ipv4 ip address. hopefully we get another callback where we do.");
+                }
             };    
         },
         setupOnAnnounceSubscribe: function() {
@@ -2566,6 +2627,13 @@ cpdefine("inline:com-chilipeppr-widget-cayenn", ["chilipeppr_ready", "Three", "T
                   <div class="upload-text" xstyle="">Upload</div>
                 </div>
                 <div class="btn-group">
+                    <button type="button" class="btn btn-xs btn-default btn-cayennscript hidden" data-delay="1000" 
+                    data-animation="true" data-placement="auto" data-container="body" data-trigger="hover" 
+                    data-title="Cayenn Script" 
+                    data-content="Send Cayenn Lua scripts to editor for you to edit and upload to your ESP32 to get you started with a Cayenn enabled ESP32."><span class="glyphicon glyphicon-edit"></span>
+                    </button>
+                </div>
+                <div class="btn-group">
                     <button type="button" class="btn btn-xs btn-default btn-refresh" data-delay="1000" 
                     data-animation="true" data-placement="auto" data-container="body" data-trigger="hover" 
                     data-title="Rescan Network for Devices" data-content="Send out a broadcast request via UDP for all devices to send back an announcement of their existence."><span class="glyphicon glyphicon-refresh"></span>
@@ -2688,23 +2756,23 @@ cpdefine("inline:com-chilipeppr-widget-cayenn", ["chilipeppr_ready", "Three", "T
                 
                 <table class="" style="border:0px solid blue;margin-top:0px;width:100%;height:100%;"><tr valign="top"><td>
                 
-                <div class="cayenn-icon-small">
-                <div class="cayenn-icon " style="" data-delay="1000" data-animation="true" data-placement="auto" data-container="body" data-trigger="hover" 
-                    data-title="DispenserPaste" 
-                    data-content='<table class="table table-condensed table-striped">
-                        <tr><th>Gcode</th><th>Description</th></tr>
-                        <tr><td>Maps to A axis</td><td>Linear slide. Max 0mm. Min -72mm.</td></tr>
-                        <tr><td>Maps to A axis</td><td>Auger. Unlimited degrees.</td></tr>
-                        </table>
-                        <p>Techcon DMP-10 auger with stepper and linear slide</p>
-                        <p style="font-size:10px;margin-bottom:0;">IP: 192.168.1.24:8988 UDP/TCP</p>
-                        '>
-                    <div class="cayenn-deviceimg" style="background-image:url('http://gds-storage-prd.s3.amazonaws.com/fusion-360/161021/1972/70f0aa71/thumbnails/raasrendering-bbf3b3d5-01c5-48e4-bbdb-f81727a520ab-160-160.jpg');" ></div>
-                    <div class="cayenn-name">
-                        DispenserPaste
+                    <div class="cayenn-icon-small">
+                        <div class="cayenn-icon " style="" data-delay="1000" data-animation="true" data-placement="auto" data-container="body" data-trigger="hover" 
+                            data-title="DispenserPaste" 
+                            data-content='<table class="table table-condensed table-striped">
+                                <tr><th>Gcode</th><th>Description</th></tr>
+                                <tr><td>Maps to A axis</td><td>Linear slide. Max 0mm. Min -72mm.</td></tr>
+                                <tr><td>Maps to A axis</td><td>Auger. Unlimited degrees.</td></tr>
+                                </table>
+                                <p>Techcon DMP-10 auger with stepper and linear slide</p>
+                                <p style="font-size:10px;margin-bottom:0;">IP: 192.168.1.24:8988 UDP/TCP</p>
+                                '>
+                            <div class="cayenn-deviceimg" style="background-image:url('http://gds-storage-prd.s3.amazonaws.com/fusion-360/161021/1972/70f0aa71/thumbnails/raasrendering-bbf3b3d5-01c5-48e4-bbdb-f81727a520ab-160-160.jpg');" ></div>
+                            <div class="cayenn-name">
+                                DispenserPaste
+                            </div>
+                        </div>
                     </div>
-                </div>
-                </div>
                 
                 </td><td style="border:0px solid green;width:100%;height:150px;margin:0;padding:0;overflow:auto;">
                 
@@ -2796,6 +2864,10 @@ cpdefine("inline:com-chilipeppr-widget-cayenn", ["chilipeppr_ready", "Three", "T
                 <input type="text" class="form-control cayenn-entercmd" placeholder="Enter Cayenn Command">
                 
             </div>
+
+                </td></tr></table>
+                
+            </div><!-- end cayenn-onedevice div -->
 
             <!-- 3D View -->
             <div id="cayenn-renderarea" class="hidden" style="border:0px solid red;position:absolute;left:0;top:0;bottom:0;right:0;">

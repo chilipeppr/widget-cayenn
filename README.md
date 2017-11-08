@@ -136,8 +136,13 @@ The table below shows, in order, the methods and properties inside the widget/el
 other widgets know how to subscribe to them and what they do.</td></tr><tr valign="top"><td>subscribe</td><td>object</td><td>Please see docs above.<br><br>Define the subscribe signals that this widget/element owns or defines so that
 other widgets know how to subscribe to them and what they do.</td></tr><tr valign="top"><td>foreignPublish</td><td>object</td><td>Please see docs above.<br><br>Document the foreign publish signals, i.e. signals owned by other widgets
 or elements, that this widget/element publishes to.</td></tr><tr valign="top"><td>foreignSubscribe</td><td>object</td><td>Please see docs above.<br><br>Document the foreign subscribe signals, i.e. signals owned by other widgets
-or elements, that this widget/element subscribes to.</td></tr><tr valign="top"><td>init</td><td>function</td><td>function () <br><br>All widgets should have an init method. It should be run by the
-instantiating code like a workspace or a different widget.</td></tr><tr valign="top"><td>setupOnPlayResetCtr</td><td>function</td><td>function () <br><br>We watch the play button and make sure we send a ResetCtr for all devices that
+or elements, that this widget/element subscribes to.</td></tr><tr valign="top"><td>init</td><td>function</td><td>function (options) <br><br>All widgets should have an init method. It should be run by the
+instantiating code like a workspace or a different widget.<br><br>You can pass in options of:
+var options = {
+enableEsp32Script: true // turns on button to let user send starter script to editor for esp32
+}
+widget.init(options);</td></tr><tr valign="top"><td>setupCayennScriptBtn</td><td>function</td><td>function () <br><br>Turn on button, if asked to during init call, to let user send Cayenn script
+to the Lua editor so they can more easily get started with Cayenn.</td></tr><tr valign="top"><td>onCreateScript</td><td>function</td><td>function () </td></tr><tr valign="top"><td>setupOnPlayResetCtr</td><td>function</td><td>function () <br><br>We watch the play button and make sure we send a ResetCtr for all devices that
 are in this Gcode file.</td></tr><tr valign="top"><td>isWaitingForLoopbackPlay</td><td>boolean</td><td></td></tr><tr valign="top"><td>onPlay</td><td>function</td><td>function (payload) <br><br>We get called here when we see the /onPlay pubsub signal. This means we have to make sure everything is safe to run, i.e.
 1) We have a Cayenn Gcode file and it matches with our devices
 2) We have uploaded everything to the devices
@@ -376,9 +381,7 @@ $('#' + this.id + ' .panel-body').removeClass('device-showing');
 },<br><br>/* 3D Related Methods Below</td></tr><tr valign="top"><td>camera</td><td>object</td><td></td></tr><tr valign="top"><td>scene</td><td>object</td><td></td></tr><tr valign="top"><td>renderer</td><td>object</td><td></td></tr><tr valign="top"><td>controls</td><td>object</td><td></td></tr><tr valign="top"><td>init3d</td><td>function</td><td>function () </td></tr><tr valign="top"><td>viewExtents</td><td>function</td><td>function () </td></tr><tr valign="top"><td>onScroll</td><td>function</td><td>function (evt) </td></tr><tr valign="top"><td>onMouseOrTouch</td><td>function</td><td>function (evt) </td></tr><tr valign="top"><td>render</td><td>function</td><td>function (evt) </td></tr><tr valign="top"><td>onResize</td><td>function</td><td>function (evt) </td></tr><tr valign="top"><td>activatePopovers</td><td>function</td><td>function () </td></tr><tr valign="top"><td>btnSetup</td><td>function</td><td>function () <br><br>Call this method from init to setup all the buttons when this widget
 is first loaded. This basically attaches click events to your 
 buttons. It also turns on all the bootstrap popovers by scanning
-the entire DOM of the widget.</td></tr><tr valign="top"><td>onHelloBtnClick</td><td>function</td><td>function (evt) <br><br>onHelloBtnClick is an example of a button click event callback</td></tr><tr valign="top"><td>options</td><td>object</td><td>User options are available in this property for reference by your
-methods. If any change is made on these options, please call
-saveOptionsLocalStorage()</td></tr><tr valign="top"><td>setupUiFromLocalStorage</td><td>function</td><td>function () <br><br>Call this method on init to setup the UI by reading the user's
+the entire DOM of the widget.</td></tr><tr valign="top"><td>onHelloBtnClick</td><td>function</td><td>function (evt) <br><br>onHelloBtnClick is an example of a button click event callback</td></tr><tr valign="top"><td>options</td><td>object</td><td></td></tr><tr valign="top"><td>setupUiFromLocalStorage</td><td>function</td><td>function () <br><br>Call this method on init to setup the UI by reading the user's
 stored settings from localStorage and then adjust the UI to reflect
 what the user wants.</td></tr><tr valign="top"><td>saveOptionsLocalStorage</td><td>function</td><td>function () <br><br>When a user changes a value that is stored as an option setting, you
 should call this method immediately so that on next load the value
