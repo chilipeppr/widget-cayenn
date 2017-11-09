@@ -301,10 +301,24 @@ cpdefine("inline:com-chilipeppr-widget-cayenn", ["chilipeppr_ready", "Three", "T
                 .done(function( data ) {
                     // console.log("got gist. data:", data);
                     var obj = {
-                        name: "xbmimagecayenn_esp32_full_v1.lua",
+                        name: "cayenn_esp32_full_v1.lua",
                         content: data
                     }
                     chilipeppr.publish("/com-chilipeppr-widget-luaeditor/loadScript", obj);
+
+                    // now get the main file
+                    $.ajax({
+                            url: "https://gist.githubusercontent.com/chilipeppr/06d769d92ee4cda2784b83d2ccacde0c/raw/df2e38cb1ae0ca93649630c7abafe8f715e08728/main_cayenn_sample.lua",
+                        })
+                        .done(function( data ) {
+                            // console.log("got gist. data:", data);
+                            var obj = {
+                                name: "main_cayenn_sample.lua",
+                                content: data
+                            }
+                            chilipeppr.publish("/com-chilipeppr-widget-luaeditor/loadScript", obj);
+        
+                        });     
 
                 });          
         },
@@ -1547,9 +1561,15 @@ cpdefine("inline:com-chilipeppr-widget-cayenn", ["chilipeppr_ready", "Three", "T
             var that = this;
             inputEl.off( "keyup" ).keyup(this.onKeyUp.bind(this));
             
-            
-            
             this.activatePopovers();
+            
+            // file in info tab
+            $('#' + this.id + ' .tabInfo-name').text('Name: ' + device.Tag.Name);
+            $('#' + this.id + ' .tabInfo-desc').text('Description: ' + device.Tag.Desc);
+            $('#' + this.id + ' .tabInfo-ip').text('IP: ' + device.Addr);
+            $('#' + this.id + ' .tabInfo-deviceid').text('DeviceId: ' + device.DeviceId);
+            $('#' + this.id + ' .tabInfo-widget').text('Widget: ' + device.Tag.Widget);
+
             
         },
         cmdHistory: [""],

@@ -344,7 +344,13 @@ qEl.find('.btn-WipeQ').off('click').click({Cmd:"WipeQ"}, this.onCmdBtn.bind(this
 qEl.find('.btn-CmdQ').off('click').click({Cmd:"CmdQ"}, this.onCmdBtn.bind(this));<br><br>// make it so the enter key works on the text input
 var inputEl = $('#' + this.id + ' .cayenn-entercmd');
 var that = this;
-inputEl.off( "keyup" ).keyup(this.onKeyUp.bind(this));<br><br><br><br>this.activatePopovers();<br><br>},
+inputEl.off( "keyup" ).keyup(this.onKeyUp.bind(this));<br><br>this.activatePopovers();<br><br>// file in info tab
+$('#' + this.id + ' .tabInfo-name').text('Name: ' + device.Tag.Name);
+$('#' + this.id + ' .tabInfo-desc').text('Description: ' + device.Tag.Desc);
+$('#' + this.id + ' .tabInfo-ip').text('IP: ' + device.Addr);
+$('#' + this.id + ' .tabInfo-deviceid').text('DeviceId: ' + device.DeviceId);
+$('#' + this.id + ' .tabInfo-widget').text('Widget: ' + device.Tag.Widget);<br><br>
+},
 cmdHistory: [""],
 cmdHistoryLastIndex: 0,
 onKeyUp: function(evt) {
