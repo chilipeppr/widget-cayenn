@@ -179,7 +179,18 @@ if (!('log' in device)) device.log = [];<br><br>var entry = {ts:new Date(), main
 if (this.cayennDeviceIdShowing == deviceid) {
 var logEl = $('#' + this.id + ' .cayenn-log');
 var entryEl = $('<tr><td>> ' + entry.ts.toLocaleTimeString() + '</td><td>' + subcmd + '</td></tr>');
-logEl.prepend(entryEl);
+logEl.prepend(entryEl);<br><br>// also show it in the fade in/out alert window
+var alertRegionEl = $('#' + this.id + ' .cayenn-log-alert-region');
+alertRegionEl.find('alert').alert('close');
+setTimeout(function() {
+alertRegionEl.html(`
+<div class="alert alert-warning fade in out">
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+` + subcmd + `
+</div>`)
+}, 100);
 }
 },
 onIncomingCmd: function(deviceid, cmd) {
@@ -189,7 +200,18 @@ if (!('log' in device)) device.log = [];<br><br>device.log.unshift(entry);<br><b
 if (this.cayennDeviceIdShowing == deviceid) {
 var logEl = $('#' + this.id + ' .cayenn-log');
 var entryEl = $('<tr><td>< ' + entry.ts.toLocaleTimeString() + '</td><td>' + cmd + '</td></tr>');
-logEl.prepend(entryEl);
+logEl.prepend(entryEl);<br><br>// also show it in the fade in/out alert window
+var alertRegionEl = $('#' + this.id + ' .cayenn-log-alert-region');
+alertRegionEl.find('alert').alert('close');
+setTimeout(function() {
+alertRegionEl.html(`
+<div class="alert alert-warning fade in out">
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+` + cmd + `
+</div>`)
+}, 300);
 }
 } else {
 console.warn("got deviceid that is empty. huh?");

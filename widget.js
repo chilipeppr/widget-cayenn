@@ -130,7 +130,7 @@ cprequire_test(["inline:com-chilipeppr-widget-cayenn"], function(myWidget) {
           }
         );
     }
-    // testLoadSPJS();
+    testLoadSPJS();
     
     var testLoadGcodeWidget = function() {
         // Inject new div to contain widget or use an existing div with an ID
@@ -1285,6 +1285,19 @@ cpdefine("inline:com-chilipeppr-widget-cayenn", ["chilipeppr_ready", "Three", "T
                 var logEl = $('#' + this.id + ' .cayenn-log');
                 var entryEl = $('<tr><td>> ' + entry.ts.toLocaleTimeString() + '</td><td>' + subcmd + '</td></tr>');
                 logEl.prepend(entryEl);
+                
+                // also show it in the fade in/out alert window
+                var alertRegionEl = $('#' + this.id + ' .cayenn-log-alert-region');
+                alertRegionEl.find('alert').alert('close');
+                setTimeout(function() {
+                    alertRegionEl.html(`
+                        <div class="alert alert-warning fade in out">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                            ` + subcmd + `
+                        </div>`)
+                }, 100);
             }
         },
         onIncomingCmd: function(deviceid, cmd) {
@@ -1303,6 +1316,19 @@ cpdefine("inline:com-chilipeppr-widget-cayenn", ["chilipeppr_ready", "Three", "T
                     var logEl = $('#' + this.id + ' .cayenn-log');
                     var entryEl = $('<tr><td>< ' + entry.ts.toLocaleTimeString() + '</td><td>' + cmd + '</td></tr>');
                     logEl.prepend(entryEl);
+                    
+                    // also show it in the fade in/out alert window
+                    var alertRegionEl = $('#' + this.id + ' .cayenn-log-alert-region');
+                    alertRegionEl.find('alert').alert('close');
+                    setTimeout(function() {
+                        alertRegionEl.html(`
+                            <div class="alert alert-warning fade in out">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                                ` + cmd + `
+                            </div>`)
+                    }, 300);
                 }
             } else {
                 console.warn("got deviceid that is empty. huh?");
