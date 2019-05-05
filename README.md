@@ -64,7 +64,7 @@ To better understand how ChiliPeppr's subscribe() method works see amplify.js's 
           </tr>
       </thead>
       <tbody>
-      <tr valign="top"><td>/com-chilipeppr-widget-cayenn/onExampleGenerate</td><td>Example: Publish this signal when we go to generate gcode.</td></tr>    
+      <tr valign="top"><td>/com-chilipeppr-widget-cayenn/onExampleGenerate</td><td>Example: Publish this signal when we go to generate gcode.</td></tr><tr valign="top"><td>/com-chilipeppr-widget-cayenn/com-chilipeppr-widget-cayenn/onNewDevice</td><td>We publish this signal when a new Cayenn device appears. Payload contains device info.</td></tr>    
       </tbody>
   </table>
 
@@ -81,7 +81,7 @@ To better understand how ChiliPeppr's publish() method works see amplify.js's do
           </tr>
       </thead>
       <tbody>
-      <tr><td colspan="2">(No signals defined in this widget/element)</td></tr>    
+      <tr valign="top"><td>/com-chilipeppr-widget-cayenn/com-chilipeppr-widget-cayenn/sendToDeviceNameViaTcp</td><td>You can chilipeppr.publish("/com-chilipeppr-widget-cayenn/sendToDeviceNameViaTcp", "Wrist3", obj ) to this signal to send a Cayenn command via TCP to a device based on its name. 1st parameter is the name of the device as it appears in the Cayenn widget like "Wrist3". 2nd parameter is an object that we can JSON.stringify like {"Cmd":"G1","Steps":0,"Fr":0,"TransId":3}. If you do not include a TransId we will add one automatically for you so we can keep track of receipts in the Cayenn widget (because each Cayenn device is expected to send back a receipt per TransId). TODO: 3rd parameter is your callback which we will call once we get the receipt back.</td></tr>    
       </tbody>
   </table>
 
@@ -141,7 +141,7 @@ instantiating code like a workspace or a different widget.<br><br>You can pass i
 var options = {
 enableEsp32Script: true // turns on button to let user send starter script to editor for esp32
 }
-widget.init(options);</td></tr><tr valign="top"><td>setupCayennScriptBtn</td><td>function</td><td>function() <br><br>Turn on button, if asked to during init call, to let user send Cayenn script
+widget.init(options);</td></tr><tr valign="top"><td>setupSendSubscriptions</td><td>function</td><td>function() </td></tr><tr valign="top"><td>onSendToDeviceNameViaTcp</td><td>function</td><td>function(name, obj, callback) </td></tr><tr valign="top"><td>setupCayennScriptBtn</td><td>function</td><td>function() <br><br>Turn on button, if asked to during init call, to let user send Cayenn script
 to the Lua editor so they can more easily get started with Cayenn.</td></tr><tr valign="top"><td>onCreateScript</td><td>function</td><td>function() </td></tr><tr valign="top"><td>setupOnPlayResetCtr</td><td>function</td><td>function() <br><br>We watch the play button and make sure we send a ResetCtr for all devices that
 are in this Gcode file.</td></tr><tr valign="top"><td>isWaitingForLoopbackPlay</td><td>boolean</td><td></td></tr><tr valign="top"><td>onPlay</td><td>function</td><td>function(payload) <br><br>We get called here when we see the /onPlay pubsub signal. This means we have to make sure everything is safe to run, i.e.
 1) We have a Cayenn Gcode file and it matches with our devices

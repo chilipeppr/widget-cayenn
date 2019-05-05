@@ -390,7 +390,8 @@ cpdefine("inline:com-chilipeppr-widget-cayenn", ["chilipeppr_ready", "Three", "T
          */
         publish: {
             // Define a key:value pair here as strings to document what signals you publish.
-            '/onExampleGenerate': 'Example: Publish this signal when we go to generate gcode.'
+            '/onExampleGenerate': 'Example: Publish this signal when we go to generate gcode.',
+            '/com-chilipeppr-widget-cayenn/onNewDevice': "We publish this signal when a new Cayenn device appears. Payload contains device info."
         },
         /**
          * Define the subscribe signals that this widget/element owns or defines so that
@@ -400,6 +401,8 @@ cpdefine("inline:com-chilipeppr-widget-cayenn", ["chilipeppr_ready", "Three", "T
             // Define a key:value pair here as strings to document what signals you subscribe to
             // so other widgets can publish to this widget to have it do something.
             // '/onExampleConsume': 'Example: This widget subscribe to this signal so other widgets can send to us and we'll do something with it.'
+            '/com-chilipeppr-widget-cayenn/sendToDeviceNameViaTcp': 'You can chilipeppr.publish("/com-chilipeppr-widget-cayenn/sendToDeviceNameViaTcp", "Wrist3", obj ) to this signal to send a Cayenn command via TCP to a device based on its name. 1st parameter is the name of the device as it appears in the Cayenn widget like \"Wrist3\". 2nd parameter is an object that we can JSON.stringify like {"Cmd":"G1","Steps":0,"Fr":0,"TransId":3}. If you do not include a TransId we will add one automatically for you so we can keep track of receipts in the Cayenn widget (because each Cayenn device is expected to send back a receipt per TransId). TODO: 3rd parameter is your callback which we will call once we get the receipt back.',
+
         },
         /**
          * Document the foreign publish signals, i.e. signals owned by other widgets
@@ -447,6 +450,8 @@ cpdefine("inline:com-chilipeppr-widget-cayenn", ["chilipeppr_ready", "Three", "T
             this.btnSetup();
             this.forkSetup();
             
+            this.setupSendSubscriptions();
+
             this.setupOnAnnounceSubscribe();
             
             var that = this;
@@ -475,7 +480,40 @@ cpdefine("inline:com-chilipeppr-widget-cayenn", ["chilipeppr_ready", "Three", "T
             this.setupUpload();
             
             
-            console.log("I am done being initted.");
+            console.log("widget-cayenn. I am done being initted.");
+        },
+        // Subscribe to events so other widgets can send Cayenn commands easily to us
+        setupSendSubscriptions: function() {
+            chilipeppr.subscribe('/com-chilipeppr-widget-cayenn/sendToDeviceNameViaTcp', this, this.onSendToDeviceNameViaTcp);
+        },
+        // This is called when somebody publishes to /onSendToDeviceNameViaTcp
+        onSendToDeviceNameViaTcp: function(name, obj, callback) {
+            console.log("got onSendToDeviceNameViaTcp. name:", name, "obj:", obj, "callback:", callback);
+
+            var devid = this.getDeviceIdFromDeviceName(name);
+            if (devid != null) {
+                // we have a device id
+                var device = this.cayennDevices[devid];
+                var maincmd = "cayenn-sendtcp " + device.Addr.IP;
+                
+                // make sure we have an obj
+                if (obj) {
+                    // see if we have a transaction id
+                    if (obj.TransId && obj.TransId >= 0) {
+                        // we do
+                    } else {
+                        obj.TransId = this.lastTransactionId++;
+                    }
+                    var subcmd = JSON.stringify(obj);
+                    this.sendCmd(device.DeviceId, maincmd, subcmd);
+                    
+                } else {
+                    console.error("You did not provide an object to send to the Cayenn device.")
+                }
+
+            } else {
+                console.error("Got device name that has no device id? name:", name);
+            }
         },
         /**
          * Turn on button, if asked to during init call, to let user send Cayenn script
