@@ -1360,6 +1360,9 @@ cpdefine("inline:com-chilipeppr-widget-cayenn", ["chilipeppr_ready", "Three", "T
                 }, 100);
             }
         },
+        /**
+         * We get incoming payloads from SPJS widget. Parse them up here.
+         */
         onIncomingCmd: function(deviceid, cmd) {
             console.log("onIncomingCmd. deviceid:", deviceid, "cmd:", cmd);
             

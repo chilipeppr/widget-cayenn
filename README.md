@@ -161,38 +161,8 @@ the upload queue, and then start the async sending queue.</td></tr><tr valign="t
 the UI as it does it. This can be called asynchronously so that lots of UI processing
 and waiting can occur to verify the upload.</td></tr><tr valign="top"><td>iconsClear</td><td>function</td><td>function() </td></tr><tr valign="top"><td>iconGet</td><td>function</td><td>function(device) </td></tr><tr valign="top"><td>setupRefreshBtn</td><td>function</td><td>function() </td></tr><tr valign="top"><td>sendRefreshCmd</td><td>function</td><td>function() </td></tr><tr valign="top"><td>getSubnetBroadcast</td><td>function</td><td>function(callback) </td></tr><tr valign="top"><td>setupOnAnnounceSubscribe</td><td>function</td><td>function() </td></tr><tr valign="top"><td>getDeviceIdFromDeviceName</td><td>function</td><td>function(name) <br><br>Loop thru all device id's and see if the device name matches. If multiple
 device id's exist for a name, the UI will have to prompt user for which exact device id
-should be used.</td></tr><tr valign="top"><td>getDeviceNameFromDeviceId</td><td>function</td><td>function(id) <br><br>Loop thru all device ID's to get a name back</td></tr><tr valign="top"><td>getAllDeviceNames</td><td>function</td><td>function() <br><br>Will loop thru all devices and grab the names and return those in an array.</td></tr><tr valign="top"><td>cayennDevices</td><td>object</td><td></td></tr><tr valign="top"><td>cayennDeviceIdShowing</td><td>object</td><td></td></tr><tr valign="top"><td>onAnnounce</td><td>function</td><td>function(payload) </td></tr><tr valign="top"><td>lastTransactionId</td><td>number</td><td>Keep track of each transaction id because Cayenn devices will regurgitate the response with this id.</td></tr><tr valign="top"><td>sendCmd</td><td>function</td><td>function(deviceid, maincmd, subcmd) </td></tr><tr valign="top"><td>onIncomingCmd</td><td>function</td><td>function(deviceid, cmd) </td></tr><tr valign="top"><td>lastQueueItems</td><td>object</td><td></td></tr><tr valign="top"><td>updateQueueForDevice</td><td>function</td><td>function(payload) </td></tr><tr valign="top"><td>updateCmdsForDevice</td><td>function</td><td>function(payload) </td></tr><tr valign="top"><td>onCmdBtn</td><td>function</td><td>function(evt) </td></tr><tr valign="top"><td>showOneDevice</td><td>function</td><td>function(evt) </td></tr><tr valign="top"><td>cmdHistory</td><td>object</td><td></td></tr><tr valign="top"><td>cmdHistoryLastIndex</td><td>number</td><td></td></tr><tr valign="top"><td>onKeyUp</td><td>function</td><td>function(evt) </td></tr><tr valign="top"><td>showIconList</td><td>function</td><td>function() </td></tr><tr valign="top"><td>loader</td><td>object</td><td>Send a command to the Cayenn device. 
-sendCmd: function(deviceid, maincmd, subcmd)
-You must pass in a deviceid. The maincmd is send-tcp or send-udp
-The subcmd is the Cayenn cmd like {"Cmd":"LaserOn"}
+should be used.</td></tr><tr valign="top"><td>getDeviceNameFromDeviceId</td><td>function</td><td>function(id) <br><br>Loop thru all device ID's to get a name back</td></tr><tr valign="top"><td>getAllDeviceNames</td><td>function</td><td>function() <br><br>Will loop thru all devices and grab the names and return those in an array.</td></tr><tr valign="top"><td>cayennDevices</td><td>object</td><td></td></tr><tr valign="top"><td>cayennDeviceIdShowing</td><td>object</td><td></td></tr><tr valign="top"><td>onAnnounce</td><td>function</td><td>function(payload) </td></tr><tr valign="top"><td>lastTransactionId</td><td>number</td><td>Keep track of each transaction id because Cayenn devices will regurgitate the response with this id.</td></tr><tr valign="top"><td>sendCmd</td><td>function</td><td>function(deviceid, maincmd, subcmd) </td></tr><tr valign="top"><td>onIncomingCmd</td><td>function</td><td>function(deviceid, cmd) <br><br>We get incoming payloads from SPJS widget. Parse them up here.</td></tr><tr valign="top"><td>lastQueueItems</td><td>object</td><td></td></tr><tr valign="top"><td>updateQueueForDevice</td><td>function</td><td>function(payload) </td></tr><tr valign="top"><td>updateCmdsForDevice</td><td>function</td><td>function(payload) </td></tr><tr valign="top"><td>onCmdBtn</td><td>function</td><td>function(evt) </td></tr><tr valign="top"><td>showOneDevice</td><td>function</td><td>function(evt) </td></tr><tr valign="top"><td>cmdHistory</td><td>object</td><td></td></tr><tr valign="top"><td>cmdHistoryLastIndex</td><td>number</td><td></td></tr><tr valign="top"><td>onKeyUp</td><td>function</td><td>function(evt) </td></tr><tr valign="top"><td>showIconList</td><td>function</td><td>function() </td></tr><tr valign="top"><td>loader</td><td>object</td><td>We get incoming payloads from SPJS widget. Parse them up here.
 /
-sendCmd: function(deviceid, maincmd, subcmd) {
-// here we send a command and store a history of it in the log
-var cmd = maincmd + " " + subcmd;
-// remove newline
-cmd = cmd.replace(/\n$/, "");
-// if (! cmd.endsWith("\n")) cmd += "\n";
-console.log("sending command for deviceid:", deviceid, " cmd:", cmd);
-chilipeppr.publish("/com-chilipeppr-widget-serialport/ws/send", cmd);<br><br>// see if history of log
-var device = this.cayennDevices[deviceid];
-if (!('log' in device)) device.log = [];<br><br>var entry = {ts:new Date(), maincmd: maincmd, subcmd: subcmd, dir:"out"};<br><br>device.log.unshift(entry);<br><br>// if view for this device is showing, shove it in log view
-if (this.cayennDeviceIdShowing == deviceid) {
-var logEl = $('#' + this.id + ' .cayenn-log');
-var entryEl = $('<tr' + '><td' + '> ' + entry.ts.toLocaleTimeString() + '</td' + '><td' + '>' + subcmd + '</td' + '></tr' + '>');
-logEl.prepend(entryEl);<br><br>// also show it in the fade in/out alert window
-var alertRegionEl = $('#' + this.id + ' .cayenn-log-alert-region');
-alertRegionEl.find('alert').alert('close');
-setTimeout(function() {
-alertRegionEl.html(`
-<div class="alert alert-warning fade in out">
-<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-<span aria-hidden="true">&times;</span>
-</button>
-` + subcmd + `
-</div>`)
-}, 100);
-}
-},
 onIncomingCmd: function(deviceid, cmd) {
 console.log("onIncomingCmd. deviceid:", deviceid, "cmd:", cmd);<br><br>if (deviceid != null && deviceid.length > 0) {
 var entry = {ts:new Date(), subcmd: cmd, dir:"in"};<br><br>var device = this.cayennDevices[deviceid];
