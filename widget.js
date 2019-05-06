@@ -197,8 +197,8 @@ cpdefine("inline:com-chilipeppr-widget-cayenn", ["chilipeppr_ready", "Three", "T
          */
         publish: {
             // Define a key:value pair here as strings to document what signals you publish.
-            '/onExampleGenerate': 'Example: Publish this signal when we go to generate gcode.',
-            '/com-chilipeppr-widget-cayenn/onNewDevice': "We publish this signal when a new Cayenn device appears. Payload contains device info."
+            '/com-chilipeppr-widget-cayenn/onRecvFromDeviceName': 'When we get incoming content from a device, we will publish to this signal so you can read the payload. For example, the Axes widget could listen to this signal to update what stepper motor steps a Cayenn device is at.',
+            '/com-chilipeppr-widget-cayenn/onNewDevice': "TODO: We publish this signal when a new Cayenn device appears. Payload contains device info."
         },
         /**
          * Define the subscribe signals that this widget/element owns or defines so that
@@ -281,10 +281,15 @@ cpdefine("inline:com-chilipeppr-widget-cayenn", ["chilipeppr_ready", "Three", "T
             
             this.init3d();
             
-            this.setupDragDropIntercept();
-            this.setupOnPlayResetCtr();
-            
-            this.setupUpload();
+            // run these delayed to give time for other widgets to load like Gcode widget
+            setTimeout(function() {
+
+                that.setupDragDropIntercept();
+                that.setupOnPlayResetCtr();
+                
+                that.setupUpload();
+    
+            }, 5000);
             
             
             console.log("widget-cayenn. I am done being initted.");
@@ -313,7 +318,7 @@ cpdefine("inline:com-chilipeppr-widget-cayenn", ["chilipeppr_ready", "Three", "T
                     }
                     var subcmd = JSON.stringify(obj);
                     this.sendCmd(device.DeviceId, maincmd, subcmd);
-                    
+
                 } else {
                     console.error("You did not provide an object to send to the Cayenn device.")
                 }
@@ -1188,6 +1193,19 @@ cpdefine("inline:com-chilipeppr-widget-cayenn", ["chilipeppr_ready", "Three", "T
             return res;
         },
         /**
+         * Loop thru all device ID's to get a name back
+         */
+        getDeviceNameFromDeviceId: function(id) {
+            console.log("getDeviceNameFromDeviceId. id:", id);
+            
+            var dev = this.cayennDevices[id];
+                
+            if ('Tag' in dev && 'Name' in dev.Tag) {
+                return dev.Tag.Name;
+            }
+            return null;
+        },
+        /**
          * Will loop thru all devices and grab the names and return those in an array.
          */
         getAllDeviceNames: function() {
@@ -1289,6 +1307,10 @@ cpdefine("inline:com-chilipeppr-widget-cayenn", ["chilipeppr_ready", "Three", "T
             // store this in the device log, and show it if the device log is showing
             this.onIncomingCmd(payload.DeviceId, payload.JsonTag);
             
+            // additionally send this out to /onRecvFromDeviceName but embellish with name
+            payload.Name = this.getDeviceNameFromDeviceId(payload.DeviceId);
+            // console.log("About to publish onRecvFromDeviceName. cayennDevices:", this.cayennDevices, "device:", device, "payload:", payload);
+            chilipeppr.publish('/com-chilipeppr-widget-cayenn/onRecvFromDeviceName', payload);
             
         },
         /**
