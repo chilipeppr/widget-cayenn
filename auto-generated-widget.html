@@ -1497,14 +1497,18 @@ cpdefine("inline:com-chilipeppr-widget-cayenn", ["chilipeppr_ready", "Three", "T
 
             }
             
-            // store this in the device log, and show it if the device log is showing
-            this.onIncomingCmd(payload.DeviceId, payload.JsonTag);
+            // do some additional items, but only if we got a device id
+            if (payload.DeviceId) {
+
+                // store this in the device log, and show it if the device log is showing
+                this.onIncomingCmd(payload.DeviceId, payload.JsonTag);
+                
+                // additionally send this out to /onRecvFromDeviceName but embellish with name
+                payload.Name = this.getDeviceNameFromDeviceId(payload.DeviceId);
+                // console.log("About to publish onRecvFromDeviceName. cayennDevices:", this.cayennDevices, "device:", device, "payload:", payload);
+                chilipeppr.publish('/com-chilipeppr-widget-cayenn/onRecvFromDeviceName', payload);
             
-            // additionally send this out to /onRecvFromDeviceName but embellish with name
-            payload.Name = this.getDeviceNameFromDeviceId(payload.DeviceId);
-            // console.log("About to publish onRecvFromDeviceName. cayennDevices:", this.cayennDevices, "device:", device, "payload:", payload);
-            chilipeppr.publish('/com-chilipeppr-widget-cayenn/onRecvFromDeviceName', payload);
-            
+            }
         },
         /**
          * Keep track of each transaction id because Cayenn devices will regurgitate the response with this id.
