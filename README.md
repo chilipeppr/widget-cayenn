@@ -178,7 +178,7 @@ var device = this.cayennDevices[deviceid];
 if (!('log' in device)) device.log = [];<br><br>var entry = {ts:new Date(), maincmd: maincmd, subcmd: subcmd, dir:"out"};<br><br>device.log.unshift(entry);<br><br>// if view for this device is showing, shove it in log view
 if (this.cayennDeviceIdShowing == deviceid) {
 var logEl = $('#' + this.id + ' .cayenn-log');
-var entryEl = $('<tr><td>> ' + entry.ts.toLocaleTimeString() + '</td><td>' + subcmd + '</td></tr>');
+var entryEl = $('<tr><td> ' + entry.ts.toLocaleTimeString() + '</td><td>' + subcmd + '</td></tr>');
 logEl.prepend(entryEl);<br><br>// also show it in the fade in/out alert window
 var alertRegionEl = $('#' + this.id + ' .cayenn-log-alert-region');
 alertRegionEl.find('alert').alert('close');

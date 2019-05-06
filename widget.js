@@ -1343,7 +1343,7 @@ cpdefine("inline:com-chilipeppr-widget-cayenn", ["chilipeppr_ready", "Three", "T
             // if view for this device is showing, shove it in log view
             if (this.cayennDeviceIdShowing == deviceid) {
                 var logEl = $('#' + this.id + ' .cayenn-log');
-                var entryEl = $('<tr><td>> ' + entry.ts.toLocaleTimeString() + '</td><td>' + subcmd + '</td></tr>');
+                var entryEl = $('<tr><td> ' + entry.ts.toLocaleTimeString() + '</td><td>' + subcmd + '</td></tr>');
                 logEl.prepend(entryEl);
                 
                 // also show it in the fade in/out alert window
