@@ -2150,6 +2150,9 @@ cpdefine("inline:com-chilipeppr-widget-cayenn", ["chilipeppr_ready", "Three", "T
             });
 
         },
+        /**
+         * This is a dispenser object. Considering removing all 3d from this widget.
+         */
         threeObj: {
         	"metadata": {
         		"type": "App"
