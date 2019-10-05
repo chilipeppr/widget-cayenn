@@ -1325,12 +1325,13 @@ cpdefine("inline:com-chilipeppr-widget-cayenn", ["chilipeppr_ready", "Three", "T
             this.iconsClear();
             
             var that = this;
-            this.getSubnetBroadcast(function(ip) {
-                console.log("got subnet broadcast. ip:", ip);
-                var cmd = "cayenn-sendudp " + ip.subnet + ' {"Cayenn":"Discover"}\n';
+            // this.getSubnetBroadcast(function(ip) {
+                // var broadcastIp = "255.255.255.255";
+                // console.log("got subnet broadcast ip:", broadcastIp);
+                var cmd = 'cayenn-sendudp-broadcast {"Cayenn":"Discover"}\n';
                 chilipeppr.publish("/com-chilipeppr-widget-serialport/ws/send", cmd);
                 
-            });
+            // });
             
             // make sure we are on the icon list
             this.showIconList();
@@ -1540,7 +1541,11 @@ cpdefine("inline:com-chilipeppr-widget-cayenn", ["chilipeppr_ready", "Three", "T
             // if view for this device is showing, shove it in log view
             if (this.cayennDeviceIdShowing == deviceid) {
                 var logEl = $('#' + this.id + ' .cayenn-log');
-                var entryEl = $('<tr' + '><td' + '> ' + entry.ts.toLocaleTimeString() + '</td' + '><td' + '>' + subcmd + '</td' + '></tr' + '>');
+                var tr = '<' + 'tr' + '>'; // need to split so runme.js parses well
+                var trEnd = '<' + '/tr' + '>'; // need to split so runme.js parses well
+                var td = '<' + 'td' + '>'; // need to split so runme.js parses well
+                var tdEnd = '<' + '/td' + '>'; // need to split so runme.js parses well
+                var entryEl = $(tr + td + entry.ts.toLocaleTimeString() + tdEnd + td + subcmd + tdEnd + trEnd);
                 logEl.prepend(entryEl);
                 
                 // also show it in the fade in/out alert window
