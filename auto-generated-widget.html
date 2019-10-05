@@ -2102,6 +2102,13 @@ cpdefine("inline:com-chilipeppr-widget-cayenn", ["chilipeppr_ready", "Three", "T
             console.log("cayenn - done initting 3d view. renderer:", this.renderer, "scene:", this.scene);
         },
         viewExtents: function() {
+
+            this.render();  
+            if (this.controls) {
+                this.controls.reset();
+            }
+            return;
+
             // use viewextents from 3d viewer
 			var camera = this.controls.object;
             // camera.fov = 35; // 35mm
