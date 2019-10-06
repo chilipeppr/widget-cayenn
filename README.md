@@ -170,7 +170,11 @@ if (!('log' in device)) device.log = [];<br><br>device.log.unshift(entry);<br><b
 if (this.cayennDeviceIdShowing == deviceid) {
 var logEl = $('#' + this.id + ' .cayenn-log');
 var entryEl = $('<tr><td>< ' + entry.ts.toLocaleTimeString() + '</td><td>' + cmd + '</td></tr>');
-logEl.prepend(entryEl);<br><br>// also show it in the fade in/out alert window
+logEl.prepend(entryEl);<br><br>// try to format the cmd so it looks nicer and word wraps nicer in browser 
+var jsonCmd = JSON.parse(cmd);
+if (jsonCmd != null) {
+cmd = JSON.stringify(jsonCmd, null, " ");
+}<br><br>// also show it in the fade in/out alert window
 var alertRegionEl = $('#' + this.id + ' .cayenn-log-alert-region');
 alertRegionEl.find('alert').alert('close');
 setTimeout(function() {

@@ -1392,6 +1392,12 @@ cpdefine("inline:com-chilipeppr-widget-cayenn", ["chilipeppr_ready", "Three", "T
                     var entryEl = $('<tr><td>< ' + entry.ts.toLocaleTimeString() + '</td><td>' + cmd + '</td></tr>');
                     logEl.prepend(entryEl);
                     
+                    // try to format the cmd so it looks nicer and word wraps nicer in browser 
+                    var jsonCmd = JSON.parse(cmd);
+                    if (jsonCmd != null) {
+                        cmd = JSON.stringify(jsonCmd, null, " ");
+                    }
+                    
                     // also show it in the fade in/out alert window
                     var alertRegionEl = $('#' + this.id + ' .cayenn-log-alert-region');
                     alertRegionEl.find('alert').alert('close');
