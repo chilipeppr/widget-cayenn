@@ -1191,6 +1191,9 @@ cpdefine("inline:com-chilipeppr-widget-cayenn", ["chilipeppr_ready", "Three", "T
                     }
                 }
             }
+
+            if (res.length == 0) res = null;
+            
             return res;
         },
         /**
